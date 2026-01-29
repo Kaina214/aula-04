@@ -1,0 +1,26 @@
+<head></head>
+
+<body>
+    
+    <form method="post">
+        {% csrf_token %}
+        <h1>➕ Novo Chamado</h1>
+        <div class="mb-3">
+            <label for="local" class="form-label">Local:</label>
+            <input type="text" class="form-control" id="local" name="local" required>
+        </div>
+        <div class="mb-3">
+            <label for="equipamento" class="form-label">Equipamento:</label>
+            <input type="text" class="form-control" id="equipamento" name="equipamento" required>
+        </div>
+        <div class="mb-3">
+            <label for="prioridade" class="form-label">Prioridade:</label>
+            <select class="form-select" id="prioridade" name="prioridade" required>
+                <option value="Baixa">Baixa</option>
+                <option value="Média">Média</option>
+                <option value="Alta">Alta</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Criar Chamado</button>
+        <a href="/" class="btn btn-secondary">Cancelar</a>
+</body>

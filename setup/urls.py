@@ -24,4 +24,6 @@ urlpatterns = [
     path('listar', listar), # Página inicial lista os chamados
     path('novo/<str:lab>/<str:problema>/<str:prioridade>/', criar), # Rota dinâmica
     path('fechar/<int:indice>', fechar), # Rota dinâmica
+    path('exibir novo chamado', criar), # Rota para criar novo chamado
+    #path('criartela,criartela)
 ]

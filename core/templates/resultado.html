@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Resultado - HelpDesk{% endblock %}
+
+{% block content %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <h4 class="alert-heading">✅ Sucesso!</h4>
+    <p>{{ mensagem }}</p>
+    <hr>
+    <p class="mb-0">O chamado foi {{ tipo_acao }} com sucesso.</p>
+</div>
+
+<div class="mt-4">
+    <a href="/listar" class="btn btn-primary btn-lg">
+        📋 Ver Lista de Chamados
+    </a>
+    <a href="/" class="btn btn-secondary btn-lg">
+        🏠 Voltar ao Início
+    </a>
+</div>
+{% endblock %}
