@@ -1,68 +1,47 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+# ...existing code...
+from django.shortcuts import render, redirect
 
-def home(request):
-    return render(request, 'home.html')
-
-# Nossa lista global (Banco de Dados em memória)
+# Nosso "banco" em memória
 chamados = [
     {"lab": "Lab 01", "problema": "PC lento", "prioridade": "Média"},
 ]
 
 def home(request):
+    return render(request, 'core/home.html', {'chamados': chamados})
 
-    # Lógica para listar os chamados em HTML
-    return render(request, 'core/home.html', )
+def listar(request):
+    return render(request, 'core/listar.html', {'chamados': chamados})
 
-    def novo_chamado(request):
-        return render(request, 'core/novo_chamado.html')
-        if (request.method == 'POST'):
-            lab = request.POST.get('laboratorio')
-            problema = request.POST.get('problema')
-            print("chegou um post")
-            print(f"Laboratório: {lab},Descrição: {problema}")
-            
-            chamados.append({
-                "lab": lab,
-                "problema": problema,
-                "prioridade": "Média"  # Prioridade fixa por enquanto
+def novo_chamado(request):
+    if request.method == 'POST':
+        lab = request.POST.get('laboratorio')
+        problema = request.POST.get('problema')
+        if not lab or not problema:
+            return render(request, 'core/novo_chamado.html', {
+                'erro': 'Preencha todos os campos.',
+                'lab': lab,
+                'problema': problema
             })
-            return redirect('/listar')
-
-            if request.method == 'GET':
-                print
-                return render(request, 'core/novo_chamado.html')
-
-
-
-
-
-
-
-
-    # return HttpResponse(render(request, 'listar.html', {'chamados': chamados}))
-    # def home_old(request):
-        # return HttpResponse("Bem-vindo ao sistema de chamados!")
-# def criar(request, lab, problema, prioridade):
-    # Criando o dicionário e adicionando à lista
-    novo = {
-        "lab": lab,
-        "problema": problema,
-        "prioridade": prioridade
-    }
-    chamados.append(novo)
-    
-    return render(request, 'resultado.html', {
-        'mensagem': f'Chamado para o {lab} criado com sucesso!',
-        'tipo_acao': 'criado'
-    })
+        chamados.append({
+            "lab": lab,
+            "problema": problema,
+            "prioridade": "Média"
+        })
+        return redirect('/listar')  # ou use redirect('listar') se tiver name='listar' nas urls
+    # GET
+    return render(request, 'core/novo_chamado.html')
 
 def fechar(request, indice):
-    del chamados[indice]
-    
+    try:
+        idx = int(indice)
+        del chamados[idx]
+    except (ValueError, IndexError):
+        return render(request, 'resultado.html', {
+            'mensagem': 'Índice inválido.',
+            'tipo_acao': 'erro'
+        })
     return render(request, 'resultado.html', {
         'mensagem': 'Chamado removido com sucesso!',
         'tipo_acao': 'removido'
     })
-def listar(request):
-    return render(request, 'core/listar.html', {'chamados': chamados})
+# ...existing code...
