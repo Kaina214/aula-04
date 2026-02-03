@@ -14,15 +14,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
-from core.views import home, listar, fechar # Importamos a função que criamos
+from core.views import home, listar, fechar, novo_chamado
+from core.views import nova_categoria
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', home),  # Deixando vazio '', a página aparece na raiz do site
-    path('listar', listar), # Página inicial lista os chamados
-    # path('novo/<str:lab>/<str:problema>/<str:prioridade>/'), # Rota dinâmica
-   path('fechar/<int:indice>/', fechar, name='fechar-chamado'),  # Rota dinâmica
-    #path('criartela,criartela)
+    path('nova-categoria/', nova_categoria, name='nova-categoria'),
+    path('', home, name='home'),
+    path('listar/', listar, name='listar'),
+    path('novo-chamado/', novo_chamado, name='novo-chamado'),
+    path('fechar/<int:indice>/', fechar, name='fechar-chamado'),
 ]
+
+
+# Note: The 'novo_chamado' view is not included in the urlpatterns.

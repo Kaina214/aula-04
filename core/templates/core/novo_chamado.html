@@ -1,5 +1,39 @@
 {% extends 'core/base.html' %}
 
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Novo Chamado</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Laboratório</label>
+            <input type="text" name="lab" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Problema</label>
+            <input type="text" name="problema" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Prioridade</label>
+            <select name="prioridade" class="form-select">
+                <option>Alta</option>
+                <option>Média</option>
+                <option>Baixa</option>
+            </select>
+        </div>
+
+        <button class="btn btn-primary">Salvar</button>
+    </form>
+</div>
+{% endblock %}
+
+
+<!-- {% extends 'core/base.html' %}
+
 
 {% block content %}
 
@@ -16,4 +50,4 @@
 
         <button> type = Salvar Chamado"</button>
        
-        {%endblock %}
+        {%endblock %} -->
