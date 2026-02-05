@@ -8,7 +8,7 @@
         {% csrf_token %}
 
         <div class="mb-3">
-            <label class="form-label">Laboratório</label>
+            <label class="form-label">Laboratorio</label>
             <input type="text" name="lab" class="form-control" required>
         </div>
 
@@ -21,35 +21,12 @@
             <label class="form-label">Prioridade</label>
             <select name="prioridade" class="form-select">
                 <option>Alta</option>
-                <option>Média</option>
+                <option>Media</option>
                 <option>Baixa</option>
             </select>
         </div>
 
-        <button type="submit">Salvar Chamado</button>
-    name="laboratorio"
-
+        <button type="submit" class="btn btn-primary">Salvar Chamado</button>
     </form>
 </div>
 {% endblock %}
-
-
-<!-- {% extends 'core/base.html' %}
-
-
-{% block content %}
-
-<form method="POST">
-    {% csrf_token %}
-
-    <div class="mb-3">
-        <label class="form-label fw-bold">Laboratório:</label>
-        <input type="text" id="lab" name="laboratorio" class="form-control mb-3"  required>
-
-          
-        <label for="problema">Problema</label>
-        <input type="text" id="problema" name="problema" class="form-control mb-3" required>
-
-        <button> type = Salvar Chamado"</button>
-       
-        {%endblock %} -->
