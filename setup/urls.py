@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.contrib import admin
 from django.urls import path
 from core.views import home, listar, fechar, novo_chamado
 from core.views import nova_categoria
@@ -21,6 +22,8 @@ from core.views import listar_chamados, listar_categorias
 
 
 urlpatterns = [
+     path('admin/', admin.site.urls),
+    
     path('nova-categoria/', nova_categoria, name='nova-categoria'),
     path('listar-chamados/', listar_chamados, name='listar-chamados'),
     path('listar-categorias/', listar_categorias, name='listar-categorias'),
