@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Chamado
+from .models import Categoria, Chamado
 
 def home(request):
     chamados = Chamado.objects.all()
@@ -38,9 +38,22 @@ def nova_categoria(request):
         nome = request.POST.get('nome')
         Categoria.objects.create(nome=nome)
         return redirect('listar_categorias')
-
     return render(request, 'core/novaCategoria.html')
+
 
 def listar_categorias(request):
     categorias = Categoria.objects.all()
     return render(request, 'core/listar_categorias.html', {'categorias': categorias})
+
+
+def editar_categoria(request, id):
+    categoria = get_object_or_404(Categoria, pk=id)
+
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        if nome:
+            categoria.nome = nome
+            categoria.save()
+        return redirect('listar_categorias')
+
+    return render(request, 'core/editar_categoria.html', {'categoria': categoria})
