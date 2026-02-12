@@ -1,59 +1,90 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Categoria, Chamado
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from .models import Chamado, Categoria
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import ListView
+
 
 def home(request):
-    chamados = Chamado.objects.all()
-    return render(request, 'core/home.html', {'chamados': chamados})
+    return render(request, "core/home.html" ) 
 
-def listar(request):
-    chamados = Chamado.objects.all()
-    return render(request, 'core/listar.html', {'chamados': chamados})
-
-def listar_chamados(request):
-    chamados = Chamado.objects.all()
-    return render(request, 'core/listar.html', {'chamados': chamados})
-
+#@login_required
 def novo_chamado(request):
-    if request.method == 'POST':
-        lab = request.POST.get('lab')
-        problema = request.POST.get('problema')
+    if request.method == "POST":
+        laboratorio = request.POST.get('laboratorio')
+        descricao = request.POST.get('descricao')
         prioridade = request.POST.get('prioridade')
+        id_categoria = request.POST.get('categoria')
+
+        # Buscamos o objeto real da categoria no banco
+        categoria_selecionada = Categoria.objects.get(id=id_categoria)
 
         Chamado.objects.create(
-            lab=lab,
-            problema=problema,
-            prioridade=prioridade
+            laboratorio=laboratorio, 
+            descricao=descricao, 
+            prioridade=prioridade,
+            categoria=categoria_selecionada # Passamos o objeto, não o texto!
         )
-        return redirect('listar')
+        return redirect('/listar-chamados')
 
-    return render(request, 'core/novo_chamado.html')
+    if request.method == "GET":
+        print("chegou um get")
+        categorias = Categoria.objects.all()
+        return render(request, 'core/novo_chamado.html', {'categorias': categorias})
 
-def fechar(request, indice):
-    chamado = get_object_or_404(Chamado, pk=indice)
+# Ainda retorna HttpResponse
+def fechar_chamado(request, id):
+    chamado = Chamado.objects.get(id=id)
     chamado.delete()
-    return redirect('listar')
+    print(f"Fechando chamado {chamado.id} - {chamado.descricao}")
+    return redirect('/listar-chamados')
 
+@login_required
+@Permission_required('core.view_chamado', raise_exception=True)
+def listar_chamados(request):
+    # Busca TODOS os registros do banco de dados
+    chamados = Chamado.objects.all() 
+    return render(request, 'core/listar_chamados.html', {"chamados": chamados})
+
+#@login_required
+def editar_chamados(request, id):
+    # Busca TODOS os registros do banco de dados
+    chamado = Chamado.objects.get(id=id)
+    categorias = Categoria.objects.all()
+
+    if request.method == "POST":
+        # 2. Atualiza os campos com o que veio do formulário
+        chamado.laboratorio = request.POST.get('laboratorio')
+        chamado.descricao = request.POST.get('descricao')
+        chamado.prioridade = request.POST.get('prioridade')
+        id_cat = request.POST.get('categoria')
+
+        chamado.categoria = Categoria.objects.get(id=id_cat)
+        
+        # 3. Salva as alterações
+        chamado.save()
+        return redirect('/listar-chamados')
+    return render(request, 'core/editar_chamado.html', {'categorias': categorias, 'chamado': chamado,})
+
+
+# Novas views para categorias
+@login_required
+def listar_categorias(request):
+    categorias = Categoria.objects.all() 
+    return render(request, 'core/listar_categorias.html', {"categorias": categorias})
+
+class ListarCategoriasView(ListView):
+    model1 = Categoria
+    template_name = 'core/listar_categorias.html'
+    context_object_name = 'categorias'
 def nova_categoria(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         nome = request.POST.get('nome')
         Categoria.objects.create(nome=nome)
-        return redirect('listar_categorias')
-    return render(request, 'core/novaCategoria.html')
+        # salvar meus dados
+        return redirect('/listar-categorias')
+    return render(request, 'core/nova_categoria.html')
 
-
-def listar_categorias(request):
-    categorias = Categoria.objects.all()
-    return render(request, 'core/listar_categorias.html', {'categorias': categorias})
-
-
-def editar_categoria(request, id):
-    categoria = get_object_or_404(Categoria, pk=id)
-
-    if request.method == 'POST':
-        nome = request.POST.get('nome')
-        if nome:
-            categoria.nome = nome
-            categoria.save()
-        return redirect('listar_categorias')
-
-    return render(request, 'core/editar_categoria.html', {'categoria': categoria})
+def excluir_categoria(request, id):
+    Categoria.objects.get(id=id).delete()
+    return redirect('/listar-categorias')

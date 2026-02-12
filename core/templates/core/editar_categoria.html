@@ -1,21 +1,32 @@
-{% extends 'core/base.html' %}
+{% extends "core/base.html" %}
 
 {% block content %}
 <div class="container py-5">
-    <h1 class="mb-4">Editar Categoria</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-primary mb-4">Lista de Categrias</h1>
+        <a href="/nova-categoria" class="btn btn-sm btn-outline-primary">Criar categoria</a>
+    </div>
 
-    <form method="post">
-        {% csrf_token %}
-
-        <div class="mb-3">
-            <label class="form-label" for="nome">Nome da categoria</label>
-            <input type="text" id="nome" name="nome" class="form-control" value="{{ categoria.nome }}" required>
-        </div>
-
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-success">Salvar</button>
-            <a href="{% url 'listar_categorias' %}" class="btn btn-secondary">Voltar</a>
-        </div>
-    </form>
+    <table class="table table-striped table-hover shadow-sm bg-white">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for categoria in categorias %}
+            <tr>
+                <td>{{ categoria.id }}</td>
+                <td>{{ categoria.nome }}</td>
+                <td>
+                    <a href="{% url 'excluir-categoria' categoria.id %}" class="btn btn-sm btn-outline-primary"
+                        onclick="return confirm('Tem certeza que deseja apagar?')">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}
