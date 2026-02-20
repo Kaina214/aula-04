@@ -1,48 +1,50 @@
-{% extends "core/base.html" %}
-
-
+{% extends 'core/base.html' %}
 {% block content %}
-<main class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow border-0">
-                <div class="card-body p-5">
-                    <h2 class="text-secondary mb-4">Status do Sistema</h2>
 
-                    <div class="alert alert-success d-flex align-items-center" role="alert">
-                        <div>
-                            <strong>Sucesso!</strong> O servidor está rodando e os templates estão conectados.
-                        </div>
-                    </div>
+<div class="container-fluid p-0">
 
-                    <p class="text-muted">
-                        Este é um exemplo de como o <strong>MVT</strong> separa as coisas.
-                        O Python apenas enviou os dados, enquanto o HTML e CSS cuidam de toda a beleza que você está
-                        vendo.
-                    </p>
+    <!-- Header -->
+    <div class="bg-light py-4 text-center position-relative">
+        <div class="position-absolute top-0 start-0 p-3">
+            <img src="{% static 'img/caminhao.png' %}" width="120">
+            <div class="fw-bold">M.K.M</div>
+        </div>
+        <h1 class="fw-bold">Estoque</h1>
+    </div>
 
-                    <hr>
+    <!-- Fundo azul -->
+    <div class="bg-primary d-flex justify-content-center align-items-center" style="height: 70vh;">
 
-                    <div class="d-grid gap-2 d-md-block">
-                        <a href="/listar-chamados" class="btn btn-outline-secondary btn-lg px-4">Lista de chamados</a>
-                        <a href="/novo-chamado" class="btn btn-outline-secondary btn-lg px-4">Novo chamado</a>
-                    </div>
+        <!-- Card central -->
+        <div class="bg-light p-5 rounded shadow text-center" style="width: 600px;">
 
-                    <div class="d-grid gap-2 d-md-block mt-3">
-                        <a href="/listar-categorias" class="btn btn-outline-primary btn-lg px-4">Lista de categorias</a>
-                        <a href="/nova-categoria" class="btn btn-outline-primary btn-lg px-4">Nova categoria</a>
-                    </div>
-                </div>
+            <!-- Botão sair -->
+            <div class="text-start mb-4">
+                <a href="{% url 'logout' %}" class="btn btn-primary px-4 rounded-pill">
+                    Sair
+                </a>
             </div>
+
+            <!-- Botões principais -->
+            <div class="d-grid gap-3 col-8 mx-auto">
+
+                <a href="{% url 'nova_mercadoria' %}" class="btn btn-primary rounded-pill">
+                    Cadastrar nova Mercadoria
+                </a>
+
+                <a href="{% url 'inventario_saida' %}" class="btn btn-primary rounded-pill">
+                    Inventário de saídas de mercadoria
+                </a>
+
+                <a href="{% url 'lista_mercadoria' %}" class="btn btn-primary rounded-pill">
+                    Lista de mercadoria
+                </a>
+
+            </div>
+
         </div>
     </div>
-</main>
 
-{% endblock %}
-
-
-{% block rodape %}
-<div class="text-center py-4 text-muted">
-    <small>&copy; 2026 - Curso Técnico de Desenvolvimento Web - Rodapé Personalizado</small>
 </div>
+
 {% endblock %}
